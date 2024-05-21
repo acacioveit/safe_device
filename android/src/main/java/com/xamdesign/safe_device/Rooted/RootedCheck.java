@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.scottyab.rootbeer.RootBeer;
 import android.os.Build;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RootedCheck {
     private static final String ONEPLUS = "oneplus";

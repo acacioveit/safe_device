@@ -3,6 +3,8 @@ package com.xamdesign.safe_device.Rooted;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GreaterThan23 implements CheckApiVersion {
     @Override

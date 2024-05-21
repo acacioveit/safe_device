@@ -1,6 +1,8 @@
 package com.xamdesign.safe_device.Rooted;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LessThan23 implements CheckApiVersion {
 
