@@ -9,6 +9,34 @@ public class LessThan23 implements CheckApiVersion {
         return canExecuteCommand("/system/xbin/which su") || isSuperuserPresent();
     }
 
+    public List<String> checkRootedVerbose() {
+
+        List<String> issues = new ArrayList<String>();
+        if (canExecuteCommand("/system/xbin/which su")) {
+            issues.add("Can execute /system/xbin/which su");
+        }
+
+        String[] paths = {
+                "/system/app/Superuser.apk",
+                "/sbin/su",
+                "/system/bin/su",
+                "/system/xbin/su",
+                "/data/local/xbin/su",
+                "/data/local/bin/su",
+                "/system/sd/xbin/su",
+                "/system/bin/failsafe/su",
+                "/data/local/su"
+        };
+
+        for (String path : paths) {
+            if (new File(path).exists()) {
+                issues.add("Found " + path);
+            }
+        }
+
+        return issues;
+    }
+
     // executes a command on the system
     private static boolean canExecuteCommand(String command) {
         boolean executeResult;

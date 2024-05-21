@@ -28,6 +28,41 @@ public class RootedCheck {
         return check.checkRooted() || rootBeerCheck(context);
     }
 
+    public static List<String> isJailBrokenVerbose(Context context) {
+        CheckApiVersion check;
+
+        if (Build.VERSION.SDK_INT >= 23) {
+            check = new GreaterThan23();
+        } else {
+            check = new LessThan23();
+        }
+
+        List<String> issues = check.checkRootedVerbose();
+        if (issues != null  && !issues.isEmpty()) {
+            return issues;    
+        }
+
+        return rootBeerCheckVerbose(context);
+    }
+
+    private static List<String> rootBeerCheckVerbose(Context context) {
+        List<String> issues = new ArrayList<String>();
+        RootBeer rootBeer = new RootBeer(context);
+        
+        String brand = Build.BRAND.toLowerCase();
+        if(brand.contains(ONEPLUS) || brand.contains(MOTO) || brand.contains(XIAOMI) || brand.contains(LENOVO)) {
+            if(rootBeer.isRootedWithoutBusyBoxCheck()) {
+                issues.add("RootBeer.isRootedWithoutBusyBoxCheck found an issue");
+            }
+        } else {
+            if (rootBeer.isRooted()) {
+                issues.add("RootBeer.isRooted found an issue");
+            }
+        }
+
+        return issues;
+    }
+
     private static Boolean rootBeerCheck(Context context) {
         RootBeer rootBeer = new RootBeer(context);
         

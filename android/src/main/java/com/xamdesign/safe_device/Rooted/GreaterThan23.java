@@ -27,6 +27,33 @@ public class GreaterThan23 implements CheckApiVersion {
         return false;
     }
 
+    public List<String> checkRootedVerbose() {
+        List<String> issues = new ArrayList();
+
+        String[] paths = {
+                "/system/app/Superuser.apk",
+                "/sbin/su",
+                "/system/bin/su",
+                "/system/xbin/su",
+                "/data/local/xbin/su",
+                "/data/local/bin/su",
+                "/system/sd/xbin/su",
+                "/system/bin/failsafe/su",
+                "/data/local/su"};
+
+        for (String path : paths) {
+            if (new File(path).exists()) {
+                issues.add("Found " + path);
+            }
+        }
+
+        if (checkRootMethod2()) {
+            issues.add("Found SU via /system/xbin/which");
+        }
+        return issues;
+    }
+
+
     private boolean checkRootMethod2() {
         Process process = null;
         try {

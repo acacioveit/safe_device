@@ -13,6 +13,21 @@ class SafeDevice {
     return isJailBroken;
   }
 
+  static Future<List<String>> get jailBrokenVerbose async {
+    final isJailBroken = await _channel.invokeMethod<List<dynamic>>(
+      'isJailBrokenVerbose',
+    );
+
+    if (isJailBroken == null) {
+      return <String>[];
+    }
+
+    return isJailBroken
+        .where((e) => e is String)
+        .map((e) => e.toString())
+        .toList();
+  }
+
   //Can this device mock location - no need to root!
   static Future<bool> get canMockLocation async {
     if (Platform.isAndroid) {

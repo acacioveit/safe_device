@@ -38,7 +38,9 @@ public class SafeDevicePlugin implements FlutterPlugin, MethodCallHandler {
       result.success("Android " + android.os.Build.VERSION.RELEASE);
     } else if (call.method.equals("isJailBroken")) {
       result.success(RootedCheck.isJailBroken(context));
-    }else if (call.method.equals("isRealDevice")) {
+    }else if (call.method.equals("isJailBrokenVerbose")) {
+      result.success(RootedCheck.isJailBrokenVerbose(context));
+    } else if (call.method.equals("isRealDevice")) {
       result.success(!EmulatorCheck.isEmulator());
     }else if (call.method.equals("isOnExternalStorage")) {
       result.success(ExternalStorageCheck.isOnExternalStorage(context));
