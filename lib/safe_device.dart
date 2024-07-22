@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
-import 'package:trust_location/trust_location.dart';
 
 class SafeDevice {
   static const MethodChannel _channel = const MethodChannel('safe_device');
@@ -28,15 +27,6 @@ class SafeDevice {
         .toList();
   }
 
-  //Can this device mock location - no need to root!
-  static Future<bool> get canMockLocation async {
-    if (Platform.isAndroid) {
-      return await TrustLocation.isMockLocation;
-    } else {
-      return !await isRealDevice || await isJailBroken;
-    }
-  }
-
   // Checks whether device is real or emulator
   static Future<bool> get isRealDevice async {
     final bool isRealDevice = await _channel.invokeMethod('isRealDevice');
@@ -54,18 +44,14 @@ class SafeDevice {
   static Future<bool> get isSafeDevice async {
     final bool isJailBroken = await _channel.invokeMethod('isJailBroken');
     final bool isRealDevice = await _channel.invokeMethod('isRealDevice');
-    final bool canMockLocation = await SafeDevice.canMockLocation;
     if (Platform.isAndroid) {
       final bool isOnExternalStorage =
           await _channel.invokeMethod('isOnExternalStorage');
-      return isJailBroken ||
-              canMockLocation ||
-              !isRealDevice ||
-              isOnExternalStorage == true
+      return isJailBroken || !isRealDevice || isOnExternalStorage == true
           ? false
           : true;
     } else {
-      return isJailBroken || !isRealDevice || canMockLocation;
+      return isJailBroken || !isRealDevice;
     }
   }
 
